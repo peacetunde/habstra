@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>HABSTRA - Habit Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Section -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">HABSTRA</h1>
+          <p class="brand-subtitle">Build habits, track streaks, stay consistent</p>
+        </div>
+      </div>
+
+      <!-- Top Stats Overview -->
+      <div class="stats-overview">
+        <div class="stat-card highlight">
+          <div class="stat-icon-wrapper total">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Habits</span>
+            <span class="stat-value" id="totalHabitsCount">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper today">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Done Today</span>
+            <span class="stat-value" id="doneTodayCount">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper streak">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 23c-4.97 0-9-3.8-9-8.5 0-3.32 2.05-6.23 3.63-7.97.4-.44 1.1-.31 1.33.24.8 1.95 2.04 3.48 3.54 4.43.34.21.78-.03.78-.43 0-2.45 1.55-5.59 3.53-7.53.38-.37 1-.16 1.1.36.46 2.37 1.87 4.54 3.09 5.86C20.4 11.23 21 13.06 21 14.5 21 19.2 16.97 23 12 23z"/>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Best Streak</span>
+            <span class="stat-value" id="bestStreakCount">0 days</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <!-- Add Habit Card -->
+      <section class="card form-card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <span class="card-badge">+</span>
+            <h2 class="card-title">Add New Habit</h2>
+          </div>
+        </div>
+
+        <form id="addHabitForm" class="habit-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="habitName">Habit Name <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="habitName" 
+                name="habitName" 
+                placeholder="e.g., Morning Meditation, Drink Water, Read Books" 
+                required 
+                maxlength="60"
+                autocomplete="off"
+              >
+              <span class="form-error" id="nameError">Please enter a habit name</span>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="habitGoal">Daily Goal <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="habitGoal" 
+                name="habitGoal" 
+                placeholder="e.g., 15 minutes, 2 liters, 20 pages" 
+                required 
+                maxlength="80"
+                autocomplete="off"
+              >
+              <span class="form-error" id="goalError">Please enter a daily goal</span>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="habitStartDate">Start Date <span class="required">*</span></label>
+              <input 
+                type="date" 
+                id="habitStartDate" 
+                name="habitStartDate" 
+                required
+              >
+              <span class="form-error" id="startDateError">Please pick a valid start date</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="addHabitBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Add Habit</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Habits List Section -->
+      <section class="card list-card">
+        <div class="list-controls">
+          <div class="search-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="searchInput" 
+              class="search-input" 
+              placeholder="Search habits by name or goal..."
+              autocomplete="off"
+            >
+            <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search" aria-label="Clear search" hidden>
+              &times;
+            </button>
+          </div>
+          <div class="search-status" id="searchStatus" aria-live="polite"></div>
+        </div>
+
+        <!-- Habits Container -->
+        <div id="habitsContainer" class="habits-list" role="list">
+          <!-- Dynamically populated habits will appear here -->
+        </div>
+
+        <!-- Empty State Container (shown when list is empty) -->
+        <div id="emptyState" class="empty-state" hidden>
+          <div class="empty-state-icon">🌱</div>
+          <h3 class="empty-state-title">No habits yet!</h3>
+          <p class="empty-state-text">
+            Small daily actions create big changes. Add your very first habit above to begin your journey!
+          </p>
+          <button type="button" class="btn btn-secondary" id="seedExampleBtn">
+            Load 3 Example Habits
+          </button>
+        </div>
+
+        <!-- No Search Results Container -->
+        <div id="noResultsState" class="empty-state no-results" hidden>
+          <div class="empty-state-icon">🔍</div>
+          <h3 class="empty-state-title">No matching habits found</h3>
+          <p class="empty-state-text">
+            Try searching for a different keyword or clear the search field.
+          </p>
+          <button type="button" class="btn btn-secondary" id="resetSearchBtn">
+            Clear Search
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p class="footer-note">HABSTRA &bull; All data is stored locally in your browser</p>
+      <div class="footer-backup-actions">
+        <button type="button" class="btn-text-action" id="exportDataBtn" title="Export habits data as JSON">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export Data
+        </button>
+        <span class="footer-divider">&bull;</span>
+        <button type="button" class="btn-text-action" id="importDataBtn" title="Import habits data from JSON">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Import Data
+        </button>
+        <input type="file" id="importFileInput" accept=".json,application/json" hidden>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Edit Habit Modal -->
+  <div class="modal-overlay" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="editModalTitle" class="modal-title">Edit Habit</h3>
+        <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close modal">&times;</button>
+      </div>
+      <form id="editHabitForm" class="modal-body" novalidate>
+        <input type="hidden" id="editHabitId">
+        
+        <div class="form-group">
+          <label for="editHabitName">Habit Name <span class="required">*</span></label>
+          <input type="text" id="editHabitName" required maxlength="60">
+          <span class="form-error" id="editNameError">Please enter a habit name</span>
+        </div>
+
+        <div class="form-group">
+          <label for="editHabitGoal">Daily Goal <span class="required">*</span></label>
+          <input type="text" id="editHabitGoal" required maxlength="80">
+          <span class="form-error" id="editGoalError">Please enter a daily goal</span>
+        </div>
+
+        <div class="form-group">
+          <label for="editHabitStartDate">Start Date <span class="required">*</span></label>
+          <input type="date" id="editHabitStartDate" required>
+          <span class="form-error" id="editStartDateError">Please pick a valid start date</span>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveEditBtn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle" hidden>
+    <div class="modal-card modal-delete">
+      <div class="modal-header">
+        <div class="delete-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+        </div>
+        <h3 id="deleteModalTitle" class="modal-title">Delete Habit?</h3>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">
+          Are you sure you want to delete <strong id="deleteHabitName">this habit</strong>?
+        </p>
+        <p class="modal-subtext">
+          This will permanently delete this habit and its streak history. This action cannot be undone.
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Habit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
