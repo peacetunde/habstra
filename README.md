@@ -46,3 +46,4 @@ habstra/
 ## 🔒 Privacy & Data
 
 All data is stored exclusively in your browser's `localStorage` (`habstra_habits_v1`). No personal data is transmitted or stored on any external server.
+
